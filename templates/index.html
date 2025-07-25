@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YT Downloader | Unduh Video Cepat & Mudah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-left-color: #fff;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-white font-sans flex items-center justify-center min-h-screen">
+
+    <div class="bg-slate-800 p-8 rounded-xl shadow-2xl w-full max-w-2xl mx-4">
+        
+        <div class="text-center mb-8">
+            <svg class="w-20 h-20 mx-auto mb-4 text-red-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+            <h1 class="text-4xl font-bold tracking-tight">YouTube Downloader</h1>
+            <p class="text-slate-400 mt-2">Tempel URL video YouTube di bawah untuk mengunduh.</p>
+        </div>
+
+        <form id="download-form" action="/download" method="post" class="space-y-6">
+            <div>
+                <label for="url" class="sr-only">URL Video</label>
+                <input type="text" name="url" id="url" class="w-full bg-slate-700 border-2 border-slate-600 rounded-lg py-3 px-4 text-white placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-red-500/50 focus:border-red-500 transition-all duration-300" placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ" required>
+            </div>
+            
+            <button type="submit" id="submit-button" class="w-full flex items-center justify-center bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-bold py-3 px-6 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-red-500/50">
+                <span class="button-text">
+                    <svg class="inline-block w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    Unduh Video
+                </span>
+                <div class="spinner hidden"></div>
+            </button>
+        </form>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="mt-6 p-4 text-sm rounded-lg {{ 'bg-red-900/50 text-red-300 border border-red-500/50' if category == 'error' else 'bg-blue-900/50 text-blue-300 border border-blue-500/50' }}" role="alert">
+                        <span class="font-medium">Oops!</span> {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+    </div>
+
+    <script>
+        const form = document.getElementById('download-form');
+        const submitButton = document.getElementById('submit-button');
+        const buttonText = submitButton.querySelector('.button-text');
+        const spinner = submitButton.querySelector('.spinner');
+
+        form.addEventListener('submit', function() {
+            buttonText.classList.add('hidden');
+            spinner.classList.remove('hidden');
+
+            submitButton.disabled = true;
+            submitButton.classList.add('cursor-not-allowed', 'opacity-75');
+        });
+    </script>
+
+</body>
+</html>
